@@ -5,7 +5,7 @@ import { prisma } from "./lib/prisma";
 const PORT = config.PORT;
 async function main() {
     try {
-        // await prisma.$connect();
+        await prisma.$connect();
         console.log("Database connected successfully")
         app.listen(PORT, () => {
             console.log("Server running on port " + PORT)
@@ -13,7 +13,7 @@ async function main() {
 
     } catch (error) {
         console.log(error)
-        // await prisma.$disconnect();
+        await prisma.$disconnect();
         process.exit(1);
     }
 }
