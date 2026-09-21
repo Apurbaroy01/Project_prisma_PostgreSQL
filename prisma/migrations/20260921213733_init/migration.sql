@@ -21,7 +21,7 @@ CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(50) NOT NULL,
     "email" TEXT NOT NULL,
-    "pasword" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "activeStatus" "ACTIVESTATUS" NOT NULL DEFAULT 'ACTIVE',
     "role" "ROLE" NOT NULL DEFAULT 'USER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -9,7 +9,9 @@ export const catchAsync = (fn: RequestHandler) => {
             console.log(error)
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
                 success: false,
-                message: error.message
+                statusCode: httpStatus.INTERNAL_SERVER_ERROR,
+                message: error.message,
+                error: error.message
             })
         }
     }
