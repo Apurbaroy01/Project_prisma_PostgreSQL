@@ -6,6 +6,7 @@ import { sendResponse } from "../../utils/sendResponse";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 
+
 // register user
 const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
@@ -19,17 +20,11 @@ const registerUser = catchAsync(async (req: Request, res: Response, next: NextFu
     })
 })
 
+
 // get my profile
 const getmyprofile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { accessToken } = req.cookies;
 
-    const verifideToken = jwtUtils.verifyToken(accessToken, config.jwt_access_Secret!)
-
-    if (typeof verifideToken === "string") {
-        throw new Error(verifideToken)
-    }
-    
-    const profile = await userService.getmyprofile(verifideToken.id);
+    const profile = await userService.getmyprofile(req.user?.id as string);
 
     sendResponse(res, {
         success: true,

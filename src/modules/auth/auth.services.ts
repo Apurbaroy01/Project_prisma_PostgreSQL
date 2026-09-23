@@ -14,6 +14,10 @@ const loginUser = async (payload: ILoginUser) => {
         }
     })
 
+    if (user.activeStatus === "BLOCKED") {
+        throw new Error("User is blocked")
+    }
+
     const isPasswordMatch = await bcrypt.compare(password, user.password)
 
     if (!isPasswordMatch) {
@@ -32,7 +36,7 @@ const loginUser = async (payload: ILoginUser) => {
     //         expiresIn: config.jwt_access_expires_in
     //     } as SignOptions
     // )
-    
+
     // access Token
     const accessToken = jwtUtils.createToken(jwtPayload, config.jwt_access_Secret!, config.jwt_access_expires_in as SignOptions)
 
