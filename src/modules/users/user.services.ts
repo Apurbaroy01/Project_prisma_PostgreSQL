@@ -22,12 +22,12 @@ const registeruserIntoDB = async (payload: registerUserpayload) => {
             name,
             email,
             password: hashPassword,
-            profile : {
+            profile: {
                 create: {
                     profilePhoto
                 }
             }
-        } 
+        }
     })
 
     // await prisma.profile.create({
@@ -53,6 +53,25 @@ const registeruserIntoDB = async (payload: registerUserpayload) => {
     return user
 }
 
+const getmyprofile = (userId: string) => {
+    const user = prisma.user.findUniqueOrThrow({
+        where: {
+            id: userId
+        },
+        omit: {
+            password: true
+        },
+        include: {
+            profile: true
+        }
+
+    })
+
+    return user;
+
+}
+
 export const userService = {
-    registeruserIntoDB
+    registeruserIntoDB,
+    getmyprofile
 }

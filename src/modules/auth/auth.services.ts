@@ -3,6 +3,7 @@ import { prisma } from "../../lib/prisma";
 import { ILoginUser } from "./auth.interface"
 import jwt, { SignOptions } from "jsonwebtoken";
 import config from "../../config";
+import { jwtUtils } from "../../utils/jwt";
 
 const loginUser = async (payload: ILoginUser) => {
     const { email, password } = payload;
@@ -26,17 +27,17 @@ const loginUser = async (payload: ILoginUser) => {
         role: user.role
     }
 
-    const accessToken = jwt.sign({ jwtPayload }, config.jwt_access_Secret!,
-        {
-            expiresIn: config.jwt_access_expires_in
-        } as SignOptions
-    )
+    // const accessToken = jwt.sign({ jwtPayload }, config.jwt_access_Secret!,
+    //     {
+    //         expiresIn: config.jwt_access_expires_in
+    //     } as SignOptions
+    // )
+    
+    // access Token
+    const accessToken = jwtUtils.createToken(jwtPayload, config.jwt_access_Secret!, config.jwt_access_expires_in as SignOptions)
 
-    const refreshToken = jwt.sign({ jwtPayload }, config.jwt_access_Secret!,
-        {
-            expiresIn: config.jwt_refresh_expires_in
-        } as SignOptions
-    )
+    // refresh Token
+    const refreshToken = jwtUtils.createToken(jwtPayload, config.jwt_refresh_Secret!, config.jwt_refresh_expires_in as SignOptions)
 
     return {
         accessToken,
