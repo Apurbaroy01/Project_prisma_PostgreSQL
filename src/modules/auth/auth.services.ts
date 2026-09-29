@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma";
 import { ILoginUser } from "./auth.interface"
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 
@@ -48,8 +48,38 @@ const loginUser = async (payload: ILoginUser) => {
         refreshToken
     }
 
-}
+};
+
+const refreshToken = async (token: string) => {
+
+    const verifideToken = jwtUtils.verifyToken(token, config.jwt_refresh_Secret!)
+    if (!verifideToken.success) {
+        throw new Error(verifideToken.error)
+    }
+
+    const { id} = verifideToken.data as JwtPayload;
+    const user =await prisma.user.findUniqueOrThrow({
+        where: {id}
+    })
+
+    if (user.activeStatus === "BLOCKED") {
+        throw new Error("User is blocked")
+    }
+
+    const jwtPayload = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+    }
+
+    const accessToken = jwtUtils.createToken(jwtPayload, config.jwt_access_Secret!, config.jwt_access_expires_in as SignOptions)
+
+    return accessToken
+
+};
 
 export const authService = {
-    loginUser
+    loginUser,
+    refreshToken
 }
