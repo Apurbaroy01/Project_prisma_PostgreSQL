@@ -1,0 +1,26 @@
+model Post {
+  id         String     @id @default(uuid())
+  title      String     @db.VarChar(255)
+  content    String     @db.Text
+  thumbnail  String?    @db.VarChar(255)
+  isFeatured Boolean    @default(false)
+  status     PostStatus @default(PUBLISHED)
+  tags       String[]
+  views      Int        @default(0)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments comment[]
+
+  @@index([authorId])
+  @@map("posts")
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
