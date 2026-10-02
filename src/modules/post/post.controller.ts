@@ -1,26 +1,29 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
+import { catchAsync } from "../../utils/catchAsync"
 
-const createPost = async (req: Request, res: Response) =>{
+const createPost = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
-const getPosts = async (req: Request, res: Response) =>{
+});
+
+const getPosts = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
-const getPostStats = async (req: Request, res: Response) =>{
+});
+
+const getPostStats = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
-const getMyPosts = async (req: Request, res: Response) =>{
+});
+const getMyPosts = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
-const getMyPostById = async (req: Request, res: Response) =>{
+} );
+const getMyPostById = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
-const updatePost = async (req: Request, res: Response) =>{
+} );
+const updatePost = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
-const deletePost = async (req: Request, res: Response) =>{
+} );
+const deletePost = catchAsync( async (req: Request, res: Response, next: NextFunction) =>{
     
-}
+} );
 
 export const postController = {
     createPost,
