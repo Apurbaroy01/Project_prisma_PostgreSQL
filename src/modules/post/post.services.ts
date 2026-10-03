@@ -15,7 +15,18 @@ const createPost = async (postData: IcreatePostPaload, userId: string) => {
 }
 
 const getPosts = async () => {
-
+    const posts = await prisma.post.findMany({
+        include: {
+            author: {
+                select: {
+                    name: true,
+                    email: true
+                }
+            },
+            comments: true
+        }
+    });
+    return posts;
 }
 
 const getPostStats = async () => {

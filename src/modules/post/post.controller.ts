@@ -4,6 +4,7 @@ import { postService } from "./post.services";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status"
 
+// create post
 const createPost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = req.user?.id;
     if (!id) {
@@ -21,7 +22,16 @@ const createPost = catchAsync(async (req: Request, res: Response, next: NextFunc
     })
 });
 
+// get all posts
 const getPosts = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const result = await postService.getPosts();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Posts fetched successfully",
+        data: result
+    })
 
 });
 
