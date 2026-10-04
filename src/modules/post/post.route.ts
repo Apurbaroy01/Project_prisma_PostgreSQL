@@ -13,7 +13,7 @@ router.get("/:postId", auth(ROLE.USER, ROLE.ADMIN), postController.getMyPostById
 
 router.get("/stats", auth(ROLE.USER, ROLE.ADMIN), postController.getPostStats)
 
-router.patch("/:postId", auth(ROLE.USER, ROLE.ADMIN), postController.updatePost)
+router.patch("/:postId", auth(ROLE.USER, ROLE.ADMIN, ROLE.AUTHOR), postController.updatePost)
 router.delete("/:postId", auth(ROLE.USER, ROLE.ADMIN), postController.deletePost)
 
 

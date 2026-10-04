@@ -68,14 +68,49 @@ const getMyPosts = catchAsync(async (req: Request, res: Response, next: NextFunc
     })
 
 });
+
 const getPostStats = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
 });
 
 const updatePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const authorId = req.user?.id;
+    const isAdmin = req.user?.role === "ADMIN";
+    const postId = req.params.postId;
+    const payload = req.body;
 
+    if (!authorId) {
+        throw new Error("Author id is required");
+    }
+
+    const result = await postService.updatePost(postId as string, payload, authorId as string, isAdmin);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Post updated successfully",
+        data: result
+    })
 });
+
+
 const deletePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const authorId = req.user?.id;
+    const isAdmin = req.user?.role === "ADMIN";
+    const postId = req.params.postId;
+
+    if (!authorId) {
+        throw new Error("Author id is required");
+    }
+
+    const result = await postService.deletePost(postId as string, authorId as string, isAdmin);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Post deleted successfully",
+        data: result
+    })
 
 });
 
