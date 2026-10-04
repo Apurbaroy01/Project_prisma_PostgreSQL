@@ -1,3 +1,4 @@
+import { CommentStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { IcreatePostPaload, iUpdatePostPayload } from "./post.interface"
 
@@ -30,34 +31,49 @@ const getPosts = async () => {
 };
 
 const getMyPostById = async (postId: string) => {
-    const post = await prisma.post.findUniqueOrThrow({
-        where: {
-            id: postId
-        }
-    });
 
-    const updatedPost = await prisma.post.update({
-        where: {
-            id: postId
-        },
-        data: {
-            views: {
-                increment: 1
-            }
-        },
-        include: {
-            author: {
-                select: {
-                    name: true,
-                    email: true
+    const transactionResult = await prisma.$transaction(async (prisma) => {
+        await prisma.post.update({
+            where: {
+                id: postId
+            },
+            data: {
+                views: {
+                    increment: 1
                 }
             },
-            comments: true
-        },
 
-    });
+        });
 
-    return updatedPost;
+        const post = await prisma.post.findUniqueOrThrow({
+            where: {
+                id: postId
+            },
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                        email: true
+                    }
+                },
+                comments: {
+                    where: {
+                        status: CommentStatus.APPROVED
+                    },
+                    orderBy: {
+                        createdAt: "desc"
+                    }
+                },
+                _count: {
+                    select: {
+                        comments: true
+                    }
+                }
+            },
+        })
+        return post;
+    })
+    return transactionResult;
 }
 
 const getMyPosts = async (authorId: string) => {
@@ -86,11 +102,11 @@ const getMyPosts = async (authorId: string) => {
     });
 
     return posts;
-}
+};
+
 const getPostStats = async () => {
 
-}
-
+};
 
 const updatePost = async (postId: string, payLoad: iUpdatePostPayload, authorId: string, isAdmin: boolean) => {
     const post = await prisma.post.findUniqueOrThrow({
