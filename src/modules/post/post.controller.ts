@@ -53,6 +53,7 @@ const getMyPostById = catchAsync(async (req: Request, res: Response, next: NextF
     })
 });
 
+// get my posts
 const getMyPosts = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id;
     if (!authorId) {
@@ -69,10 +70,21 @@ const getMyPosts = catchAsync(async (req: Request, res: Response, next: NextFunc
 
 });
 
+// get post stats
 const getPostStats = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const result = await postService.getPostStats();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Post stats fetched successfully",
+        data: result
+    })
 
 });
 
+// update post
 const updatePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id;
     const isAdmin = req.user?.role === "ADMIN";
@@ -93,7 +105,7 @@ const updatePost = catchAsync(async (req: Request, res: Response, next: NextFunc
     })
 });
 
-
+// delete post
 const deletePost = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.user?.id;
     const isAdmin = req.user?.role === "ADMIN";
