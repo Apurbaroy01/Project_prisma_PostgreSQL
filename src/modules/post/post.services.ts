@@ -17,6 +17,27 @@ const createPost = async (postData: IcreatePostPaload, userId: string) => {
 
 const getPosts = async () => {
     const posts = await prisma.post.findMany({
+        // exat match
+
+
+        // where: {
+        //     AND: [
+        //         { title: "my six post" },
+        //         { status: PostStatus.PUBLISHED },
+        //         { tags:{
+        //             has: "typescript"
+        //         }}
+        //     ]
+        // },
+
+        // partial match with or condition
+
+        where: {
+            OR: [
+                { title: { contains: "my six", mode: "insensitive" }},
+                { content: { contains: "my six", mode: "insensitive" }},
+            ]
+        },
         include: {
             author: {
                 select: {
