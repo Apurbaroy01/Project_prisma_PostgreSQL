@@ -1,4 +1,5 @@
 import { CommentStatus, PostStatus } from "../../../generated/prisma/enums";
+import { PostWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 import { IcreatePostPaload, IGetPostsQuery, iUpdatePostPayload } from "./post.interface"
 
@@ -22,20 +23,40 @@ const getPosts = async (query: IGetPostsQuery) => {
     const page = query.page ? parseInt(query.page) : 1;
     const skip = (page - 1) * limit;
 
+    const conditions: PostWhereInput[] = []
+    if (query.searchTrem){
+        conditions.push({
+            OR: [
+                { title: { contains: query.searchTrem, mode: "insensitive" } },
+                { content: { contains: query.searchTrem, mode: "insensitive" } },
+            ]
+        })
+    };
+    if (query.title){
+        conditions.push({ title: query.title })
+    };
+    if (query.content){
+        conditions.push({ content: query.content })
+    };
+
 
     const posts = await prisma.post.findMany({
-        where: {
-            AND:[
-                query.searchTrem? {
-                    OR: [
-                        { title: { contains: query.searchTrem, mode: "insensitive" } },
-                        { content: { contains: query.searchTrem, mode: "insensitive" } },
-                    ]
-                } : {},
+        // where: {
+        //     AND: [
+        //         query.searchTrem ? {
+        //             OR: [
+        //                 { title: { contains: query.searchTrem, mode: "insensitive" } },
+        //                 { content: { contains: query.searchTrem, mode: "insensitive" } },
+        //             ]
+        //         } : {},
 
-                query.title? { title : query.title}: {},
-                query.content? { content : query.content}: {}
-            ]
+        //         query.title ? { title: query.title } : {},
+        //         query.content ? { content: query.content } : {}
+        //     ]
+        // },
+
+        where: {
+            AND: conditions
         },
         take: limit,
         skip: skip,
