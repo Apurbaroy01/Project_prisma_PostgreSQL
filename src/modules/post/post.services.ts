@@ -31,13 +31,27 @@ const getPosts = async () => {
         // },
 
         // partial match with or condition
+        // where: {
+        //     OR: [
+        //         { title: { contains: "my six", mode: "insensitive" }},
+        //         { content: { contains: "my six", mode: "insensitive" }},
+        //     ]
+        // },
 
+        // combining search or filter
         where: {
-            OR: [
-                { title: { contains: "my six", mode: "insensitive" }},
-                { content: { contains: "my six", mode: "insensitive" }},
+            AND: [
+                {
+                    OR: [
+                        { title: { contains: "my six", mode: "insensitive" } },
+                        { content: { contains: "my six", mode: "insensitive" } },
+                    ]
+                },
+                { title: "my six", },
+                { content: "my six" },
             ]
         },
+
         include: {
             author: {
                 select: {
