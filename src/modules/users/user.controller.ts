@@ -3,8 +3,7 @@ import { userService } from "./user.services";
 import { catchAsync } from "../../utils/catchAsync";
 import httpStatus from "http-status"
 import { sendResponse } from "../../utils/sendResponse";
-import config from "../../config";
-import { jwtUtils } from "../../utils/jwt";
+
 
 
 // register user
