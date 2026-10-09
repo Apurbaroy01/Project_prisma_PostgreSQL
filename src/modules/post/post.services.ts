@@ -1,6 +1,6 @@
 import { CommentStatus, PostStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
-import { IcreatePostPaload, iUpdatePostPayload } from "./post.interface"
+import { IcreatePostPaload, IGetPostsQuery, iUpdatePostPayload } from "./post.interface"
 
 const createPost = async (postData: IcreatePostPaload, userId: string) => {
 
@@ -15,41 +15,32 @@ const createPost = async (postData: IcreatePostPaload, userId: string) => {
 
 };
 
-const getPosts = async () => {
+
+
+const getPosts = async (query: IGetPostsQuery) => {
+    const limit = query.limit ? parseInt(query.limit) : 10;
+    const page = query.page ? parseInt(query.page) : 1;
+    const skip = (page - 1) * limit;
+
+
     const posts = await prisma.post.findMany({
-        // exat match
-
-
-        // where: {
-        //     AND: [
-        //         { title: "my six post" },
-        //         { status: PostStatus.PUBLISHED },
-        //         { tags:{
-        //             has: "typescript"
-        //         }}
-        //     ]
-        // },
-
-        // partial match with or condition
-        // where: {
-        //     OR: [
-        //         { title: { contains: "my six", mode: "insensitive" }},
-        //         { content: { contains: "my six", mode: "insensitive" }},
-        //     ]
-        // },
-
-        // combining search or filter
         where: {
-            AND: [
-                {
+            AND:[
+                query.searchTrem? {
                     OR: [
-                        { title: { contains: "my six", mode: "insensitive" } },
-                        { content: { contains: "my six", mode: "insensitive" } },
+                        { title: { contains: query.searchTrem, mode: "insensitive" } },
+                        { content: { contains: query.searchTrem, mode: "insensitive" } },
                     ]
-                },
-                { title: "my six", },
-                { content: "my six" },
+                } : {},
+
+                query.title? { title : query.title}: {},
+                query.content? { content : query.content}: {}
             ]
+        },
+        take: limit,
+        skip: skip,
+        orderBy: {
+            createdAt: "desc"
         },
 
         include: {
