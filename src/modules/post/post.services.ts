@@ -16,8 +16,6 @@ const createPost = async (postData: IcreatePostPaload, userId: string) => {
 
 };
 
-
-
 const getPosts = async (query: IGetPostsQuery) => {
     const limit = query.limit ? parseInt(query.limit) : 10;
     const page = query.page ? parseInt(query.page) : 1;
