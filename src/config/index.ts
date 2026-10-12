@@ -16,6 +16,7 @@ export default {
 
     STRIPE_PRICE_ID: process.env.STRIPE_PRICE_ID!,
     STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY!,
-    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!
 
 };
