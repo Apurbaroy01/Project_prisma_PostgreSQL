@@ -14,7 +14,7 @@ export default {
     jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN,
 
 
-    STRIPE_PRODUCT_KEY: process.env.STRIPE_PRODUCT_KEY!,
+    STRIPE_PRICE_ID: process.env.STRIPE_PRICE_ID!,
     STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY!,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!
 
