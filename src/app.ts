@@ -9,6 +9,7 @@ import { commentRoute } from "./modules/comment/comment.route";
 import { notFound } from "./middlewares/notFound";
 import httpStatus from "http-status";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { subscribtionRoute } from "./modules/subscribtin/subscribtion.route";
 
 
 const app: Application = express();
@@ -25,6 +26,7 @@ app.use("/api/users", userRoute)
 app.use("/api/auth", authRoute)
 app.use("/api/posts", postRoute)
 app.use("/api/comments", commentRoute)
+app.use("/api/subscribtion", subscribtionRoute)
 
 app.use(notFound)
 app.use(globalErrorHandler)
