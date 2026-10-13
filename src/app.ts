@@ -63,7 +63,7 @@ app.use(cors({
 //     response.send();
 // })
 
-app.use("api/subscribtion/webhook", express.raw({ type: 'application/json' }))
+app.use("/api/subscribtion/webhook", express.raw({ type: "application/json" }))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

@@ -31,7 +31,7 @@ const createCheckOutSession = async (userid: string) => {
         const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
-                    price:config.STRIPE_PRICE_ID,
+                    price: config.STRIPE_PRICE_ID,
                     quantity: 1
                 }
             ],
@@ -68,13 +68,13 @@ const handleWebhook = async (payload: Buffer, signature: string) => {
 
             break;
         case 'customer.subscription.updated':
-            
+
             // Then define and call a method to handle the successful attachment of a PaymentMethod.
             // handlePaymentMethodAttached(paymentMethod);
             break;
-        
+
         case 'customer.subscription.deleted':
-            
+
             // Then define and call a method to handle the successful attachment of a PaymentMethod.
             // handlePaymentMethodAttached(paymentMethod);
             break;

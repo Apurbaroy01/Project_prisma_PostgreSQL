@@ -18,10 +18,10 @@ const createCheckOutSession = catchAsync(async (req: Request, res: Response, nex
 });
 
 const handleWebhook = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const event = req.body as Buffer;
-    const signature = req.headers['stripe-signature']!;
+    const payload = req.body as Buffer;
+    const signature = req.headers['stripe-signature'];
 
-    await subscribtionServices.handleWebhook(event, signature as string);
+    await subscribtionServices.handleWebhook(payload, signature as string);
 
     sendResponse(res, {
         success: true,
