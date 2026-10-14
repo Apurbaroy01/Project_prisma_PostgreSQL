@@ -20,10 +20,12 @@ app.use(cors({
     credentials: true
 }));
 
-// const endpointSecret = config.STRIPE_WEBHOOK_SECRET
+const endpointSecret = config.STRIPE_WEBHOOK_SECRET
 
 // app.post('/api/subscribtion/webhook', express.raw({ type: 'application/json' }), (request, response) => {
 //     let event = request.body;
+//     console.log("event", event)
+//     console.log(request.headers)
 //     // Only verify the event if you have an endpoint secret defined.
 //     // Otherwise use the basic event deserialized with JSON.parse
 //     if (endpointSecret) {
