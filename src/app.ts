@@ -9,8 +9,6 @@ import { commentRoute } from "./modules/comment/comment.route";
 import { notFound } from "./middlewares/notFound";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { subscribtionRoute } from "./modules/subscribtin/subscribtion.route";
-import { stripe } from "./lib/stripe";
-
 
 
 const app: Application = express();
